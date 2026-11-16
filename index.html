@@ -240,6 +240,12 @@
   .r-epic { color: #a855f7; }
   .r-legendary { color: #f59e0b; }
   .r-mythic { color: #ef4444; }
+
+  .loading {
+    color: #9aa6c4;
+    font-size: 14px;
+    font-weight: 600;
+  }
 </style>
 </head>
 <body>
@@ -288,107 +294,115 @@ const games = [
   {
     title: "Adopt Me!",
     rarity: "Common",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png"
+    placeId: 920587237
   },
   {
     title: "Brookhaven RP",
     rarity: "Common",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png"
+    placeId: 4924922222
   },
   {
     title: "Obby Creator",
     rarity: "Common",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=2913303231&width=420&height=420&format=png"
+    placeId: 2913303231
   },
   {
     title: "Blox Fruits",
     rarity: "Uncommon",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=2753915549&width=420&height=420&format=png"
+    placeId: 2753915549
   },
   {
     title: "Doors",
     rarity: "Rare",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=6839171747&width=420&height=420&format=png"
+    placeId: 6839171747
   },
   {
     title: "Murder Mystery 2",
     rarity: "Rare",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=142823291&width=420&height=420&format=png"
+    placeId: 142823291
   },
   {
     title: "Nullscape",
     rarity: "Rare",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=129279692364812&width=420&height=420&format=png"
+    placeId: 129279692364812
   },
   {
     title: "Grow a Garden",
     rarity: "Epic",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=126884695634066&width=420&height=420&format=png"
+    placeId: 126884695634066
   },
   {
     title: "Blade Ball",
     rarity: "Epic",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=13772394625&width=420&height=420&format=png"
+    placeId: 13772394625
   },
   {
     title: "Grow a Garden 2",
     rarity: "Epic",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=97598239454123&width=420&height=420&format=png"
+    placeId: 97598239454123
   },
   {
     title: "Jailbreak",
     rarity: "Legendary",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png"
+    placeId: 606849621
   },
   {
     title: "The Strongest Battlegrounds",
     rarity: "Legendary",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=10449761463&width=420&height=420&format=png"
+    placeId: 10449761463
   },
   {
     title: "Da Hood",
     rarity: "Legendary",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=2788229376&width=420&height=420&format=png"
+    placeId: 2788229376
   },
   {
     title: "Dress to Impress",
     rarity: "Mythic",
-    image: "https://www.roblox.com/asset-thumbnail/image?assetId=15101393044&width=420&height=420&format=png"
+    placeId: 15101393044
   }
 ];
 
 const rarities = [
-  {
-    name: "Common",
-    chance: 45,
-    level: 1
-  },
-  {
-    name: "Uncommon",
-    chance: 25,
-    level: 2
-  },
-  {
-    name: "Rare",
-    chance: 15,
-    level: 3
-  },
-  {
-    name: "Epic",
-    chance: 9,
-    level: 4
-  },
-  {
-    name: "Legendary",
-    chance: 5,
-    level: 5
-  },
-  {
-    name: "Mythic",
-    chance: 1,
-    level: 6
-  }
+  { name: "Common", chance: 45, level: 1 },
+  { name: "Uncommon", chance: 25, level: 2 },
+  { name: "Rare", chance: 15, level: 3 },
+  { name: "Epic", chance: 9, level: 4 },
+  { name: "Legendary", chance: 5, level: 5 },
+  { name: "Mythic", chance: 1, level: 6 }
 ];
+
+const thumbnailCache = {};
+
+async function getGameThumbnail(game) {
+  if (thumbnailCache[game.placeId]) {
+    return thumbnailCache[game.placeId];
+  }
+
+  try {
+    const placeResponse = await fetch(
+      "https://games.roblox.com/v1/games/multiget-place-details?placeIds=" + game.placeId
+    );
+
+    const placeData = await placeResponse.json();
+
+    const universeId = placeData.data[0].universeId;
+
+    const thumbnailResponse = await fetch(
+      "https://thumbnails.roblox.com/v1/games/icons?universeIds=" + universeId + "&size=512x512&format=Png&isCircular=false"
+    );
+
+    const thumbnailData = await thumbnailResponse.json();
+
+    const imageUrl = thumbnailData.data[0].imageUrl;
+
+    thumbnailCache[game.placeId] = imageUrl;
+
+    return imageUrl;
+  } catch (error) {
+    return "";
+  }
+}
 
 function rollGame() {
   const rollButton = document.getElementById("rollButton");
@@ -396,7 +410,7 @@ function rollGame() {
   rollButton.disabled = true;
   rollButton.textContent = "Rolling";
 
-  setTimeout(() => {
+  setTimeout(async () => {
     const totalChance = rarities.reduce(
       (total, rarity) => total + rarity.chance,
       0
@@ -422,15 +436,17 @@ function rollGame() {
       Math.floor(Math.random() * matchingGames.length)
     ];
 
-    showGame(game);
+    await showGame(game);
 
     rollButton.disabled = false;
     rollButton.textContent = "Roll";
   }, 500);
 }
 
-function showGame(game) {
-  document.getElementById("gameImage").src = game.image;
+async function showGame(game) {
+  const imageUrl = await getGameThumbnail(game);
+
+  document.getElementById("gameImage").src = imageUrl;
   document.getElementById("gameTitle").textContent = game.title;
 
   document.getElementById("gameRarity").textContent =
@@ -440,15 +456,15 @@ function showGame(game) {
     "rarity r-" + game.rarity.toLowerCase();
 }
 
-function buildIndex() {
+async function buildIndex() {
   const grid = document.getElementById("gameGrid");
 
-  games.forEach(game => {
+  for (const game of games) {
     const card = document.createElement("div");
     card.className = "game-card";
 
     card.innerHTML = `
-      <img src="${game.image}" alt="${game.title}">
+      <img src="" alt="${game.title}">
       <div class="game-card-info">
         <div class="game-card-title">${game.title}</div>
         <div class="game-card-rarity r-${game.rarity.toLowerCase()}">
@@ -462,7 +478,11 @@ function buildIndex() {
     };
 
     grid.appendChild(card);
-  });
+
+    const imageUrl = await getGameThumbnail(game);
+
+    card.querySelector("img").src = imageUrl;
+  }
 }
 
 buildIndex();
