@@ -240,12 +240,6 @@
   .r-epic { color: #a855f7; }
   .r-legendary { color: #f59e0b; }
   .r-mythic { color: #ef4444; }
-
-  .loading {
-    color: #9aa6c4;
-    font-size: 14px;
-    font-weight: 600;
-  }
 </style>
 </head>
 <body>
@@ -294,72 +288,72 @@ const games = [
   {
     title: "Adopt Me!",
     rarity: "Common",
-    placeId: 920587237
+    image: "https://i.pinimg.com/736x/2a/4d/09/2a4d092f81027803ee813402963783f4.jpg"
   },
   {
     title: "Brookhaven RP",
     rarity: "Common",
-    placeId: 4924922222
+    image: "PASTE_BROOKHAVEN_IMAGE_LINK"
   },
   {
     title: "Obby Creator",
     rarity: "Common",
-    placeId: 2913303231
+    image: "PASTE_OBBY_CREATOR_IMAGE_LINK"
   },
   {
     title: "Blox Fruits",
     rarity: "Uncommon",
-    placeId: 2753915549
+    image: "PASTE_BLOX_FRUITS_IMAGE_LINK"
   },
   {
     title: "Doors",
     rarity: "Rare",
-    placeId: 6839171747
+    image: "PASTE_DOORS_IMAGE_LINK"
   },
   {
     title: "Murder Mystery 2",
     rarity: "Rare",
-    placeId: 142823291
+    image: "PASTE_MURDER_MYSTERY_2_IMAGE_LINK"
   },
   {
     title: "Nullscape",
     rarity: "Rare",
-    placeId: 129279692364812
+    image: "PASTE_NULLSCAPE_IMAGE_LINK"
   },
   {
     title: "Grow a Garden",
     rarity: "Epic",
-    placeId: 126884695634066
+    image: "PASTE_GROW_A_GARDEN_IMAGE_LINK"
   },
   {
     title: "Blade Ball",
     rarity: "Epic",
-    placeId: 13772394625
+    image: "PASTE_BLADE_BALL_IMAGE_LINK"
   },
   {
     title: "Grow a Garden 2",
     rarity: "Epic",
-    placeId: 97598239454123
+    image: "PASTE_GROW_A_GARDEN_2_IMAGE_LINK"
   },
   {
     title: "Jailbreak",
     rarity: "Legendary",
-    placeId: 606849621
+    image: "PASTE_JAILBREAK_IMAGE_LINK"
   },
   {
     title: "The Strongest Battlegrounds",
     rarity: "Legendary",
-    placeId: 10449761463
+    image: "PASTE_STRONGEST_BATTLEGROUNDS_IMAGE_LINK"
   },
   {
     title: "Da Hood",
     rarity: "Legendary",
-    placeId: 2788229376
+    image: "PASTE_DA_HOOD_IMAGE_LINK"
   },
   {
     title: "Dress to Impress",
     rarity: "Mythic",
-    placeId: 15101393044
+    image: "PASTE_DRESS_TO_IMPRESS_IMAGE_LINK"
   }
 ];
 
@@ -372,45 +366,13 @@ const rarities = [
   { name: "Mythic", chance: 1, level: 6 }
 ];
 
-const thumbnailCache = {};
-
-async function getGameThumbnail(game) {
-  if (thumbnailCache[game.placeId]) {
-    return thumbnailCache[game.placeId];
-  }
-
-  try {
-    const placeResponse = await fetch(
-      "https://games.roblox.com/v1/games/multiget-place-details?placeIds=" + game.placeId
-    );
-
-    const placeData = await placeResponse.json();
-
-    const universeId = placeData.data[0].universeId;
-
-    const thumbnailResponse = await fetch(
-      "https://thumbnails.roblox.com/v1/games/icons?universeIds=" + universeId + "&size=512x512&format=Png&isCircular=false"
-    );
-
-    const thumbnailData = await thumbnailResponse.json();
-
-    const imageUrl = thumbnailData.data[0].imageUrl;
-
-    thumbnailCache[game.placeId] = imageUrl;
-
-    return imageUrl;
-  } catch (error) {
-    return "";
-  }
-}
-
 function rollGame() {
   const rollButton = document.getElementById("rollButton");
 
   rollButton.disabled = true;
   rollButton.textContent = "Rolling";
 
-  setTimeout(async () => {
+  setTimeout(() => {
     const totalChance = rarities.reduce(
       (total, rarity) => total + rarity.chance,
       0
@@ -436,17 +398,15 @@ function rollGame() {
       Math.floor(Math.random() * matchingGames.length)
     ];
 
-    await showGame(game);
+    showGame(game);
 
     rollButton.disabled = false;
     rollButton.textContent = "Roll";
   }, 500);
 }
 
-async function showGame(game) {
-  const imageUrl = await getGameThumbnail(game);
-
-  document.getElementById("gameImage").src = imageUrl;
+function showGame(game) {
+  document.getElementById("gameImage").src = game.image;
   document.getElementById("gameTitle").textContent = game.title;
 
   document.getElementById("gameRarity").textContent =
@@ -456,15 +416,15 @@ async function showGame(game) {
     "rarity r-" + game.rarity.toLowerCase();
 }
 
-async function buildIndex() {
+function buildIndex() {
   const grid = document.getElementById("gameGrid");
 
-  for (const game of games) {
+  games.forEach(game => {
     const card = document.createElement("div");
     card.className = "game-card";
 
     card.innerHTML = `
-      <img src="" alt="${game.title}">
+      <img src="${game.image}" alt="${game.title}">
       <div class="game-card-info">
         <div class="game-card-title">${game.title}</div>
         <div class="game-card-rarity r-${game.rarity.toLowerCase()}">
@@ -478,11 +438,7 @@ async function buildIndex() {
     };
 
     grid.appendChild(card);
-
-    const imageUrl = await getGameThumbnail(game);
-
-    card.querySelector("img").src = imageUrl;
-  }
+  });
 }
 
 buildIndex();
