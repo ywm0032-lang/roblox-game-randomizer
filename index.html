@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roblox Game Randomizer</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #eef2ff;
+    background:
+      radial-gradient(circle at 15% 0%, #1b2447 0%, transparent 45%),
+      radial-gradient(circle at 85% 10%, #2a1b47 0%, transparent 45%),
+      #0b0f19;
+    padding: 25px 15px 50px;
+  }
+
+  .container {
+    max-width: 950px;
+    margin: auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: white;
+    text-shadow:
+      0 0 18px rgba(124, 92, 255, 0.65),
+      0 0 45px rgba(124, 92, 255, 0.25);
+  }
+
+  h1 span {
+    color: #7c5cff;
+  }
+
+  .subtitle {
+    margin-top: 8px;
+    color: #9aa6c4;
+    font-weight: 600;
+  }
+
+  .card {
+    background: linear-gradient(180deg, rgba(124, 92, 255, 0.13), #141a2b 55%);
+    border: 1px solid #2c375d;
+    border-radius: 25px;
+    padding: 25px;
+    text-align: center;
+    box-shadow:
+      0 25px 70px rgba(0, 0, 0, 0.45),
+      0 0 40px rgba(124, 92, 255, 0.08);
+  }
+
+  .game-image {
+    width: 100%;
+    max-width: 560px;
+    height: 290px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid #313d63;
+    display: block;
+    margin: auto;
+    box-shadow:
+      0 20px 45px rgba(0, 0, 0, 0.45),
+      0 0 30px rgba(124, 92, 255, 0.18);
+  }
+
+  .game-title {
+    font-size: 30px;
+    font-weight: 900;
+    margin: 20px 0 8px;
+    text-shadow: 0 0 18px rgba(124, 92, 255, 0.35);
+  }
+
+  .rarity {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid currentColor;
+    margin-bottom: 25px;
+  }
+
+  .common {
+    color: #9aa6c4;
+    box-shadow: 0 0 18px rgba(154, 166, 196, 0.25);
+  }
+
+  .uncommon {
+    color: #4ade80;
+    box-shadow: 0 0 18px rgba(74, 222, 128, 0.3);
+  }
+
+  .rare {
+    color: #38bdf8;
+    box-shadow: 0 0 18px rgba(56, 189, 248, 0.3);
+  }
+
+  .epic {
+    color: #a855f7;
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.35);
+  }
+
+  .legendary {
+    color: #f59e0b;
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.35);
+  }
+
+  .mythic {
+    color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+  }
+
+  .roll-button {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    margin: auto;
+    padding: 20px;
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: white;
+    background: linear-gradient(135deg, #7c5cff, #4f9cff);
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow:
+      0 0 25px rgba(124, 92, 255, 0.55),
+      0 15px 35px rgba(0, 0, 0, 0.4);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  }
+
+  .roll-button:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow:
+      0 0 38px rgba(124, 92, 255, 0.75),
+      0 18px 40px rgba(0, 0, 0, 0.45);
+  }
+
+  .roll-button:active {
+    transform: translateY(1px);
+  }
+
+  .index {
+    margin-top: 40px;
+  }
+
+  h2 {
+    font-size: 26px;
+    font-weight: 900;
+    margin-bottom: 5px;
+    color: white;
+    text-shadow: 0 0 15px rgba(124, 92, 255, 0.3);
+  }
+
+  .index-subtitle {
+    color: #9aa6c4;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+    gap: 16px;
+  }
+
+  .game-card {
+    background: #141a2b;
+    border: 1px solid #2a355a;
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .game-card:hover {
+    transform: translateY(-4px);
+    border-color: #7c5cff;
+    box-shadow:
+      0 15px 35px rgba(0, 0, 0, 0.4),
+      0 0 25px rgba(124, 92, 255, 0.28);
+  }
+
+  .game-card img {
+    width: 100%;
+    height: 135px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .game-card-info {
+    padding: 13px;
+    text-align: left;
+  }
+
+  .game-card-title {
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .game-card-rarity {
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Roblox <span>Game Randomizer</span></h1>
+    <p class="subtitle">Roll for random Roblox games and discover every rarity.</p>
+  </div>
+
+  <div class="card">
+    <img
+      id="gameImage"
+      class="game-image"
+      src=""
+      alt="Roblox game thumbnail"
+    >
+
+    <div class="game-title" id="gameTitle">
+      Press Roll to start
+    </div>
+
+    <div class="rarity" id="gameRarity">
+      Rarity: ???
+    </div>
+
+    <button class="roll-button" onclick="rollGame()">
+      Roll
+    </button>
+  </div>
+
+  <div class="index">
+    <h2>Roblox Game Index</h2>
+    <p class="index-subtitle">
+      Browse every Roblox game available in the randomizer.
+    </p>
+
+    <div class="game-grid" id="gameGrid"></div>
+  </div>
+</div>
+
+<script>
+const games = [
+  {
+    title: "Adopt Me!",
+    rarity: "Common",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  },
+  {
+    title: "Brookhaven RP",
+    rarity: "Common",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  },
+  {
+    title: "Blox Fruits",
+    rarity: "Uncommon",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  },
+  {
+    title: "Doors",
+    rarity: "Rare",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  },
+  {
+    title: "Murder Mystery 2",
+    rarity: "Rare",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  },
+  {
+    title: "Grow a Garden",
+    rarity: "Epic",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  },
+  {
+    title: "Blade Ball",
+    rarity: "Epic",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  },
+  {
+    title: "Jailbreak",
+    rarity: "Legendary",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  },
+  {
+    title: "The Strongest Battlegrounds",
+    rarity: "Legendary",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  },
+  {
+    title: "Dress to Impress",
+    rarity: "Mythic",
+    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+  }
+];
+
+const rarities = [
+  { name: "Common", chance: 45 },
+  { name: "Uncommon", chance: 25 },
+  { name: "Rare", chance: 15 },
+  { name: "Epic", chance: 9 },
+  { name: "Legendary", chance: 5 },
+  { name: "Mythic", chance: 1 }
+];
+
+function rollGame() {
+  const totalChance = rarities.reduce(
+    (total, rarity) => total + rarity.chance,
+    0
+  );
+
+  let random = Math.random() * totalChance;
+  let chosenRarity = rarities[0];
+
+  for (const rarity of rarities) {
+    random -= rarity.chance;
+
+    if (random <= 0) {
+      chosenRarity = rarity;
+      break;
+    }
+  }
+
+  const matchingGames = games.filter(
+    game => game.rarity === chosenRarity.name
+  );
+
+  const game = matchingGames[
+    Math.floor(Math.random() * matchingGames.length)
+  ];
+
+  showGame(game);
+}
+
+function showGame(game) {
+  document.getElementById("gameImage").src = game.image;
+  document.getElementById("gameTitle").textContent = game.title;
+
+  document.getElementById("gameRarity").textContent =
+    game.rarity;
+
+  document.getElementById("gameRarity").className =
+    "rarity " + game.rarity.toLowerCase();
+}
+
+function buildIndex() {
+  const grid = document.getElementById("gameGrid");
+
+  games.forEach(game => {
+    const card = document.createElement("div");
+    card.className = "game-card";
+
+    card.innerHTML = `
+      <img src="${game.image}" alt="${game.title}">
+      <div class="game-card-info">
+        <div class="game-card-title">${game.title}</div>
+        <div class="game-card-rarity ${game.rarity.toLowerCase()}">
+          ${game.rarity}
+        </div>
+      </div>
+    `;
+
+    card.onclick = function () {
+      showGame(game);
+    };
+
+    grid.appendChild(card);
+  });
+}
+
+buildIndex();
+</script>
+
+</body>
+</html>
