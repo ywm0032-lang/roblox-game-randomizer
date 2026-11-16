@@ -14,10 +14,7 @@
     min-height: 100vh;
     font-family: "Segoe UI", Arial, sans-serif;
     color: #eef2ff;
-    background:
-      radial-gradient(circle at 15% 0%, #1b2447 0%, transparent 45%),
-      radial-gradient(circle at 85% 10%, #2a1b47 0%, transparent 45%),
-      #0b0f19;
+    background: #000000;
     padding: 25px 15px 50px;
   }
 
@@ -53,13 +50,13 @@
   }
 
   .card {
-    background: linear-gradient(180deg, rgba(124, 92, 255, 0.13), #141a2b 55%);
-    border: 1px solid #2c375d;
+    background: #0d0d0d;
+    border: 1px solid #262626;
     border-radius: 25px;
     padding: 25px;
     text-align: center;
     box-shadow:
-      0 25px 70px rgba(0, 0, 0, 0.45),
+      0 25px 70px rgba(0, 0, 0, 0.7),
       0 0 40px rgba(124, 92, 255, 0.08);
   }
 
@@ -69,12 +66,12 @@
     height: 290px;
     object-fit: cover;
     border-radius: 20px;
-    border: 1px solid #313d63;
+    border: 1px solid #333333;
     display: block;
     margin: auto;
-    background: #0e1424;
+    background: #000000;
     box-shadow:
-      0 20px 45px rgba(0, 0, 0, 0.45),
+      0 20px 45px rgba(0, 0, 0, 0.6),
       0 0 30px rgba(124, 92, 255, 0.18);
   }
 
@@ -82,6 +79,7 @@
     font-size: 30px;
     font-weight: 900;
     margin: 20px 0 8px;
+    color: white;
     text-shadow: 0 0 18px rgba(124, 92, 255, 0.35);
   }
 
@@ -93,7 +91,7 @@
     letter-spacing: 1.5px;
     padding: 8px 18px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid currentColor;
     margin-bottom: 25px;
   }
@@ -145,7 +143,7 @@
     text-transform: uppercase;
     box-shadow:
       0 0 25px rgba(124, 92, 255, 0.55),
-      0 15px 35px rgba(0, 0, 0, 0.4);
+      0 15px 35px rgba(0, 0, 0, 0.5);
     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
   }
 
@@ -154,7 +152,7 @@
     filter: brightness(1.1);
     box-shadow:
       0 0 38px rgba(124, 92, 255, 0.75),
-      0 18px 40px rgba(0, 0, 0, 0.45);
+      0 18px 40px rgba(0, 0, 0, 0.55);
   }
 
   .roll-button:active {
@@ -192,8 +190,8 @@
   }
 
   .game-card {
-    background: #141a2b;
-    border: 1px solid #2a355a;
+    background: #0d0d0d;
+    border: 1px solid #262626;
     border-radius: 18px;
     overflow: hidden;
     cursor: pointer;
@@ -204,7 +202,7 @@
     transform: translateY(-4px);
     border-color: #7c5cff;
     box-shadow:
-      0 15px 35px rgba(0, 0, 0, 0.4),
+      0 15px 35px rgba(0, 0, 0, 0.6),
       0 0 25px rgba(124, 92, 255, 0.28);
   }
 
@@ -213,7 +211,7 @@
     height: 135px;
     object-fit: cover;
     display: block;
-    background: #0e1424;
+    background: #000000;
   }
 
   .game-card-info {
@@ -224,6 +222,7 @@
   .game-card-title {
     font-size: 16px;
     font-weight: 800;
+    color: white;
   }
 
   .game-card-rarity {
@@ -293,67 +292,67 @@ const games = [
   {
     title: "Brookhaven RP",
     rarity: "Common",
-    image: "PASTE_BROOKHAVEN_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-6ee25638908aba49f33c6ce6f13fdf3b/768/432/Image/Png/noFilter"
   },
   {
     title: "Obby Creator",
     rarity: "Common",
-    image: "PASTE_OBBY_CREATOR_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-6c2aea83c0ffee410bbd2ff8935fdeff/768/432/Image/Png/noFilter"
   },
   {
     title: "Blox Fruits",
     rarity: "Uncommon",
-    image: "PASTE_BLOX_FRUITS_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-77b3430ced16006f6da18d6a77b95ea0/768/432/Image/Png/noFilter"
   },
   {
     title: "Doors",
     rarity: "Rare",
-    image: "PASTE_DOORS_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-e822a794752ce011565eca23a280f4dc/768/432/Image/Png/noFilter"
   },
   {
     title: "Murder Mystery 2",
     rarity: "Rare",
-    image: "PASTE_MURDER_MYSTERY_2_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-f483597f5ce44b2617413c11c7425802/768/432/Image/Png/noFilter"
   },
   {
-    title: "Nullscape",
+    title: "Nullscapes",
     rarity: "Rare",
-    image: "PASTE_NULLSCAPE_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-4eae4d78f4fb9a18334818920626bb48/768/432/Image/Png/noFilter"
   },
   {
     title: "Grow a Garden",
     rarity: "Epic",
-    image: "PASTE_GROW_A_GARDEN_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-eae2baf51021aa5687214da860f0eff9/768/432/Image/Png/noFilter"
   },
   {
     title: "Blade Ball",
     rarity: "Epic",
-    image: "PASTE_BLADE_BALL_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-be150ba07c74cd57deb31791c2675323/768/432/Image/Png/noFilter"
   },
   {
     title: "Grow a Garden 2",
     rarity: "Epic",
-    image: "PASTE_GROW_A_GARDEN_2_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-7dce127c50d46bb92b9601335b8363b3/768/432/Image/Png/noFilter"
   },
   {
     title: "Jailbreak",
     rarity: "Legendary",
-    image: "PASTE_JAILBREAK_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-3c80b2fc1f8d1a1ef72048e98bc1ebae/768/432/Image/Png/noFilter"
   },
   {
     title: "The Strongest Battlegrounds",
     rarity: "Legendary",
-    image: "PASTE_STRONGEST_BATTLEGROUNDS_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-c947df5b221c30672c3591247a8c6495/768/432/Image/Png/noFilter"
   },
   {
     title: "Da Hood",
     rarity: "Legendary",
-    image: "PASTE_DA_HOOD_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-655a8b7fc990b48f595db9bcfd7ea70b/768/432/Image/Png/noFilter"
   },
   {
     title: "Dress to Impress",
     rarity: "Mythic",
-    image: "PASTE_DRESS_TO_IMPRESS_IMAGE_LINK"
+    image: "https://tr.rbxcdn.com/180DAY-d1d34e3e05aa722be00171804119c874/768/432/Image/Png/noFilter"
   }
 ];
 
