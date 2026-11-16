@@ -72,6 +72,7 @@
     border: 1px solid #313d63;
     display: block;
     margin: auto;
+    background: #0e1424;
     box-shadow:
       0 20px 45px rgba(0, 0, 0, 0.45),
       0 0 30px rgba(124, 92, 255, 0.18);
@@ -97,32 +98,32 @@
     margin-bottom: 25px;
   }
 
-  .common {
+  .r-common {
     color: #9aa6c4;
     box-shadow: 0 0 18px rgba(154, 166, 196, 0.25);
   }
 
-  .uncommon {
+  .r-uncommon {
     color: #4ade80;
     box-shadow: 0 0 18px rgba(74, 222, 128, 0.3);
   }
 
-  .rare {
+  .r-rare {
     color: #38bdf8;
     box-shadow: 0 0 18px rgba(56, 189, 248, 0.3);
   }
 
-  .epic {
+  .r-epic {
     color: #a855f7;
     box-shadow: 0 0 18px rgba(168, 85, 247, 0.35);
   }
 
-  .legendary {
+  .r-legendary {
     color: #f59e0b;
     box-shadow: 0 0 18px rgba(245, 158, 11, 0.35);
   }
 
-  .mythic {
+  .r-mythic {
     color: #ef4444;
     box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
   }
@@ -158,6 +159,12 @@
 
   .roll-button:active {
     transform: translateY(1px);
+  }
+
+  .roll-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
   }
 
   .index {
@@ -206,6 +213,7 @@
     height: 135px;
     object-fit: cover;
     display: block;
+    background: #0e1424;
   }
 
   .game-card-info {
@@ -225,6 +233,13 @@
     text-transform: uppercase;
     letter-spacing: 1px;
   }
+
+  .r-common { color: #9aa6c4; }
+  .r-uncommon { color: #4ade80; }
+  .r-rare { color: #38bdf8; }
+  .r-epic { color: #a855f7; }
+  .r-legendary { color: #f59e0b; }
+  .r-mythic { color: #ef4444; }
 </style>
 </head>
 <body>
@@ -232,7 +247,9 @@
 <div class="container">
   <div class="header">
     <h1>Roblox <span>Game Randomizer</span></h1>
-    <p class="subtitle">Roll for random Roblox games and discover every rarity.</p>
+    <p class="subtitle">
+      Roll for random Roblox games. Better rarities are harder to get.
+    </p>
   </div>
 
   <div class="card">
@@ -251,7 +268,7 @@
       Rarity: ???
     </div>
 
-    <button class="roll-button" onclick="rollGame()">
+    <button class="roll-button" id="rollButton" onclick="rollGame()">
       Roll
     </button>
   </div>
@@ -271,91 +288,145 @@ const games = [
   {
     title: "Adopt Me!",
     rarity: "Common",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=920587237&width=420&height=420&format=png"
   },
   {
     title: "Brookhaven RP",
     rarity: "Common",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=4924922222&width=420&height=420&format=png"
+  },
+  {
+    title: "Obby Creator",
+    rarity: "Common",
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=2913303231&width=420&height=420&format=png"
   },
   {
     title: "Blox Fruits",
     rarity: "Uncommon",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=2753915549&width=420&height=420&format=png"
   },
   {
     title: "Doors",
     rarity: "Rare",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=6839171747&width=420&height=420&format=png"
   },
   {
     title: "Murder Mystery 2",
     rarity: "Rare",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=142823291&width=420&height=420&format=png"
+  },
+  {
+    title: "Nullscape",
+    rarity: "Rare",
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=129279692364812&width=420&height=420&format=png"
   },
   {
     title: "Grow a Garden",
     rarity: "Epic",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=126884695634066&width=420&height=420&format=png"
   },
   {
     title: "Blade Ball",
     rarity: "Epic",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=13772394625&width=420&height=420&format=png"
+  },
+  {
+    title: "Grow a Garden 2",
+    rarity: "Epic",
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=97598239454123&width=420&height=420&format=png"
   },
   {
     title: "Jailbreak",
     rarity: "Legendary",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=606849621&width=420&height=420&format=png"
   },
   {
     title: "The Strongest Battlegrounds",
     rarity: "Legendary",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=10449761463&width=420&height=420&format=png"
+  },
+  {
+    title: "Da Hood",
+    rarity: "Legendary",
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=2788229376&width=420&height=420&format=png"
   },
   {
     title: "Dress to Impress",
     rarity: "Mythic",
-    image: "https://tr.rbxcdn.com/30DAY-Avatar-Headshot-Image-4E3F1E4E1C4B4E1E1B4E1E1E1E1E1E1-PNG/420/420/Image/Png/noFilter"
+    image: "https://www.roblox.com/asset-thumbnail/image?assetId=15101393044&width=420&height=420&format=png"
   }
 ];
 
 const rarities = [
-  { name: "Common", chance: 45 },
-  { name: "Uncommon", chance: 25 },
-  { name: "Rare", chance: 15 },
-  { name: "Epic", chance: 9 },
-  { name: "Legendary", chance: 5 },
-  { name: "Mythic", chance: 1 }
+  {
+    name: "Common",
+    chance: 45,
+    level: 1
+  },
+  {
+    name: "Uncommon",
+    chance: 25,
+    level: 2
+  },
+  {
+    name: "Rare",
+    chance: 15,
+    level: 3
+  },
+  {
+    name: "Epic",
+    chance: 9,
+    level: 4
+  },
+  {
+    name: "Legendary",
+    chance: 5,
+    level: 5
+  },
+  {
+    name: "Mythic",
+    chance: 1,
+    level: 6
+  }
 ];
 
 function rollGame() {
-  const totalChance = rarities.reduce(
-    (total, rarity) => total + rarity.chance,
-    0
-  );
+  const rollButton = document.getElementById("rollButton");
 
-  let random = Math.random() * totalChance;
-  let chosenRarity = rarities[0];
+  rollButton.disabled = true;
+  rollButton.textContent = "Rolling";
 
-  for (const rarity of rarities) {
-    random -= rarity.chance;
+  setTimeout(() => {
+    const totalChance = rarities.reduce(
+      (total, rarity) => total + rarity.chance,
+      0
+    );
 
-    if (random <= 0) {
-      chosenRarity = rarity;
-      break;
+    let random = Math.random() * totalChance;
+    let chosenRarity = rarities[0];
+
+    for (const rarity of rarities) {
+      random -= rarity.chance;
+
+      if (random <= 0) {
+        chosenRarity = rarity;
+        break;
+      }
     }
-  }
 
-  const matchingGames = games.filter(
-    game => game.rarity === chosenRarity.name
-  );
+    const matchingGames = games.filter(
+      game => game.rarity === chosenRarity.name
+    );
 
-  const game = matchingGames[
-    Math.floor(Math.random() * matchingGames.length)
-  ];
+    const game = matchingGames[
+      Math.floor(Math.random() * matchingGames.length)
+    ];
 
-  showGame(game);
+    showGame(game);
+
+    rollButton.disabled = false;
+    rollButton.textContent = "Roll";
+  }, 500);
 }
 
 function showGame(game) {
@@ -366,7 +437,7 @@ function showGame(game) {
     game.rarity;
 
   document.getElementById("gameRarity").className =
-    "rarity " + game.rarity.toLowerCase();
+    "rarity r-" + game.rarity.toLowerCase();
 }
 
 function buildIndex() {
@@ -380,7 +451,7 @@ function buildIndex() {
       <img src="${game.image}" alt="${game.title}">
       <div class="game-card-info">
         <div class="game-card-title">${game.title}</div>
-        <div class="game-card-rarity ${game.rarity.toLowerCase()}">
+        <div class="game-card-rarity r-${game.rarity.toLowerCase()}">
           ${game.rarity}
         </div>
       </div>
